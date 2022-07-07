@@ -265,10 +265,11 @@ def get_application_details():
     status, app_details = db.get_application_details(package_id)
 
     for file in app_details["files"]:
+        
         data = {
-            "download_filename": file["filename"] + "." + file["apk_type"],
+            "download_filename": file["filename"] + "." + file.get("apk_type",""),
             "folder_name": package_id,
-            "server_file_name": file["version_unique_id"] + "." + file["apk_type"]
+            "server_file_name": file["version_unique_id"] + "." + file.get("apk_type","")
         }
 
         token = token_generator.generate_ttl_token(data)
