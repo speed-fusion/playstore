@@ -65,7 +65,7 @@ class GenerateBackupZip:
     def generate_apk_backup_zip(self):
         tmp_files_zip_path = self.backup_dir.joinpath(self.now.strftime("FILES_%d_%m_%Y"))
         
-        shutil.make_archive(str(self.files_zip_path),'zip',str(self.downloads_dir))
+        shutil.make_archive(str(tmp_files_zip_path),'zip',str(self.downloads_dir))
         
         return self.files_zip_path
     
