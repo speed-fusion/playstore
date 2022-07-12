@@ -54,13 +54,17 @@ class GenerateBackupZip:
                     f.write(bson.BSON.encode(doc))
             print(f'file generated : {file_path}')
         
-        shutil.make_archive(str(self.mongo_zip_path),'zip',str(self.mongo_backup_dir))
+        tmp_mongo_zip_path = self.backup_dir.joinpath(self.now.strftime("MONGODB_%d_%m_%Y"))
+        
+        shutil.make_archive(str(tmp_mongo_zip_path),'zip',str(self.mongo_backup_dir))
         
         shutil.rmtree(str(self.mongo_backup_dir))
         
         return self.mongo_zip_path
         
     def generate_apk_backup_zip(self):
+        tmp_files_zip_path = self.backup_dir.joinpath(self.now.strftime("FILES_%d_%m_%Y"))
+        
         shutil.make_archive(str(self.files_zip_path),'zip',str(self.downloads_dir))
         
         return self.files_zip_path
