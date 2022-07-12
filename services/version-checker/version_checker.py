@@ -1,6 +1,6 @@
 from datetime import datetime
 from database import Database
-from helper import generate_file_id
+from helper import generate_file_id,generate_filename
 from apkpure_scraper import ApkpureScraper
 import os
 import time
@@ -38,7 +38,9 @@ class VersionChecker:
             version_code = data["version_code"]
             published_on = data["published_on_text"]
             
-            filename,file_id = generate_file_id(package_name,version,version_code,published_on)
+            _,file_id = generate_file_id(package_name,version,version_code,published_on)
+            
+            filename = generate_filename(package_name,version)
             
             data["_id"] = file_id
             data["filename"] = filename

@@ -20,10 +20,18 @@ def generate_sha1_hex(text):
 def get_current_timestamp():
     return datetime.now()
 
+# reference :  spotify_8.7.44.968_latestmodapks.com.apk
+def generate_filename(package_name,version):
+    
+    app_name = f'{package_name}'.replace("com.","").lower().replace(".","_")
+    
+    filename = f'{app_name}_{version}_latestmodapks.com'
+    
+    return filename
+    
+
 def generate_file_id(package_name,version,version_code,published_on):
-    
     tmp = f'{package_name}-{version}-{version_code}-{published_on}'.lower().strip()
-    
     id = generate_sha1_hex(tmp)
     
     return tmp,id
