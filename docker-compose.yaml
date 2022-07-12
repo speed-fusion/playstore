@@ -76,8 +76,9 @@ services:
   
   dropbox_backup:
     build: ./services/dropbox_backup
-    
+
     volumes:
       - ./services/downloads:/downloads
+      - ./backup:/usr/src/app/backup
     
     env_file: .env
