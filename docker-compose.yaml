@@ -73,3 +73,11 @@ services:
       - mongodb
     build: ./services/version-checker-cron/
     env_file: .env
+  
+  dropbox_backup:
+    build: ./services/dropbox_backup
+    
+    volumes:
+      - ./services/downloads:/downloads
+    
+    env_file: .env
