@@ -48,7 +48,7 @@ class GenerateBackupZip:
     def generate_mongodb_backup_zip(self):
         
         for collection in self.db.get_all_collection():
-            file_path = self.mongo_backup_dir.joinpath(f'{collection}.bson')
+            file_path = self.mongo_backup_dir.joinpath(f'{collection["name"]}.bson')
             with open(file_path,'wb+') as f:
                 for doc in self.db.db[collection].find({}):
                     f.write(bson.BSON.encode(doc))
