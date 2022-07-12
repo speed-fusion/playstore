@@ -54,7 +54,7 @@ class GenerateBackupZip:
                     f.write(bson.BSON.encode(doc))
             print(f'file generated : {file_path}')
         
-        shutil.make_archive(str(self.mongo_zip_path),str(self.mongo_backup_dir))
+        shutil.make_archive(str(self.mongo_zip_path),'zip',str(self.mongo_backup_dir))
         
         shutil.rmtree(str(self.mongo_backup_dir))
         
