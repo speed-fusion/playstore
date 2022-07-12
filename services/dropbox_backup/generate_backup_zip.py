@@ -42,9 +42,6 @@ class GenerateBackupZip:
         
         self.mongo_zip_path = self.backup_dir.joinpath(self.now.strftime("MONGODB_%d_%m_%Y.zip"))
         self.files_zip_path = self.backup_dir.joinpath(self.now.strftime("FILES_%d_%m_%Y.zip"))
-        
-        if not self.current_date_dir.exists():
-            self.current_date_dir.mkdir()
             
         self.downloads_dir = Path("/downloads")
         
