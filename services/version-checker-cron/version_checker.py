@@ -79,6 +79,6 @@ if __name__ == "__main__":
     while True:
         vc = VersionChecker()
         vc.main()
-        time.sleep(30 * 60)
+        # time.sleep(30 * 60)
         vc.version_manager()
-        time.sleep(30 * 60)
+        # time.sleep(30 * 60)
