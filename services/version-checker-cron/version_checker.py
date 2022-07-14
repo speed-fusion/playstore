@@ -56,7 +56,7 @@ class VersionChecker:
     
     def version_manager(self):
         
-        all_apps = list(self.db.application.find({"status":"active"}))
+        all_apps = list(self.db.application.find({"status":"active","_id":"a1657ccd543f12e66e587ee52ed9d802e22aac47"}))
         
         for app in all_apps:
             versions = list(self.db.files.find({"package_id":app["_id"],"status":"active"}).sort("published_date_timestamp",pymongo.DESCENDING))
