@@ -59,7 +59,7 @@ class VersionChecker:
         all_apps = list(self.db.application.find({"status":"active"}))
         
         for app in all_apps:
-            versions = list(self.db.files.find({"package_id":app["_id"],"status":"active"}).sort("published_date_timestamp",pymongo.DESCENDING))
+            versions = list(self.db.files.find({"package_id":app["_id"],"status":"active"}).sort("published_on_timestamp",pymongo.DESCENDING))
             
             for v in versions[4:]:
                 
