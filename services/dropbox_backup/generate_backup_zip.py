@@ -80,8 +80,28 @@ class GenerateBackupZip:
                 yield str(item)
     
     def generate_apk_backup_zip(self):
-        for path in self.directory_iterator(self.downloads_dir):
-            self.todays_zip.write(path,f'apk_backup/{path}',zipfile.ZIP_DEFLATED)
+        # for path in self.directory_iterator(self.downloads_dir):
+        #     self.todays_zip.write(path,f'apk_backup/{path}',zipfile.ZIP_DEFLATED)
+        for app in self.db.apps.find({}):
+            versions = list(self.db.files.find({"package_id":app["_id"],"status":"active"}).sort("published_on_timestamp",pymongo.DESCENDING))
+            
+            if len(versions) == 0:
+                continue
+            latest_file = versions[0]
+            file_name = latest_file["version_unique_id"] + "." + latest_file.get("apk_type","")
+            
+            file_dir = self.downloads_dir.joinpath(latest_file["package_id"])
+            
+            file_path = file_dir.joinpath(file_name)
+            icon_path = file_dir.joinpath("icon.png")
+            
+            if file_path.exists() == True:
+                print(f'added : {file_path}')
+                self.todays_zip.write(str(file_path),f'apk_backup/{file_path}',zipfile.ZIP_DEFLATED)
+            
+            if icon_path.exists() == True:
+                print(f'added : {icon_path}')
+                self.todays_zip.write(str(icon_path),f'apk_backup/{icon_path}',zipfile.ZIP_DEFLATED)
     
     
     # you can use this code to restore the database. you need to provide backup directory path and database instance.
