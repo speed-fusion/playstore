@@ -16,7 +16,7 @@ class DropboxFileUploader:
     
     def upload(self,file_path:Path):
         with open(file_path,"rb") as f:
-            self.dropbox.files_upload(f.read(),self.upload_dir + file_path.name)
+            self.dropbox.files_upload(f.read(),self.upload_dir + "/" + file_path.name)
     
     def manage_backup_files(self):
         files = self.dropbox.files_list_folder(self.upload_dir, limit=30).entries
