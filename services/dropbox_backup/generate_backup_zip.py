@@ -73,13 +73,13 @@ class GenerateBackupZip:
     def directory_iterator(self,target_dir:Path):
         for item in target_dir.glob("*"):
             if item.is_dir() == True:
-                self.directory_iterator(item)
+                for file in self.directory_iterator(item):
+                    yield str(file)
             else:
                 print(f'found path : {item}')
                 yield str(item)
     
     def generate_apk_backup_zip(self):
-        
         for path in self.directory_iterator(self.downloads_dir):
             self.todays_zip.write(path,f'apk_backup/{path}',zipfile.ZIP_DEFLATED)
     
