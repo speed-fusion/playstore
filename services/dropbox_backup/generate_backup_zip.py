@@ -75,6 +75,7 @@ class GenerateBackupZip:
             if item.is_dir() == True:
                 self.directory_iterator(item)
             else:
+                print(f'found path : {item}')
                 yield str(item)
     
     def generate_apk_backup_zip(self):
