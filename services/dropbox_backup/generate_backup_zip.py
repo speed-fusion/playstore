@@ -1,10 +1,11 @@
+from genericpath import isdir
 from pathlib import Path
 import os
 import pymongo
 from datetime import datetime
 import bson
 import shutil
-
+import zipfile
 
 user = os.environ.get("MONGO_USERNAME")
 password = os.environ.get("MONGO_PASSWORD")
@@ -16,6 +17,8 @@ class MongoDatabase:
         connection_uri = f'mongodb://{user}:{password}@{host}/?authSource=admin'
         client = pymongo.MongoClient(connection_uri)
         self.db = client[db_name]
+        self.apps =  self.db["application"]
+        self.files = self.db["files"]
     
     def get_all_collection(self):
         return list(self.db.list_collections())
@@ -40,11 +43,12 @@ class GenerateBackupZip:
         if not self.mongo_backup_dir.exists():
             self.mongo_backup_dir.mkdir()
         
-        self.mongo_zip_path = self.backup_dir.joinpath(self.now.strftime("MONGODB_%d_%m_%Y.zip"))
-        self.files_zip_path = self.backup_dir.joinpath(self.now.strftime("FILES_%d_%m_%Y.zip"))
-            
+        self.zip_path = self.backup_dir.joinpath(self.now.strftime("%d_%m_%Y.zip"))
+        
         self.downloads_dir = Path("/downloads")
         
+        self.todays_zip = zipfile.ZipFile(self.zip_path,"w")
+
     def generate_mongodb_backup_zip(self):
         
         for collection in self.db.get_all_collection():
@@ -53,21 +57,31 @@ class GenerateBackupZip:
                 for doc in self.db.db[collection["name"]].find({}):
                     f.write(bson.BSON.encode(doc))
             print(f'file generated : {file_path}')
+
+            self.todays_zip.write(str(file_path),f'mongo_backup/{file_path}',zipfile.ZIP_DEFLATED)
+            
+            file_path.unlink()
         
-        tmp_mongo_zip_path = self.backup_dir.joinpath(self.now.strftime("MONGODB_%d_%m_%Y"))
+        # tmp_mongo_zip_path = self.backup_dir.joinpath(self.now.strftime("MONGODB_%d_%m_%Y"))
         
-        shutil.make_archive(str(tmp_mongo_zip_path),'zip',str(self.mongo_backup_dir))
+        # shutil.make_archive(str(tmp_mongo_zip_path),'zip',str(self.mongo_backup_dir))
         
-        shutil.rmtree(str(self.mongo_backup_dir))
+        # shutil.rmtree(str(self.mongo_backup_dir))
         
-        return self.mongo_zip_path
-        
+        # return self.mongo_zip_path
+    
+    def directory_iterator(self,target_dir:Path):
+        for item in target_dir.glob("*"):
+            if item.is_dir() == True:
+                self.directory_iterator(item)
+            else:
+                yield str(item)
+    
     def generate_apk_backup_zip(self):
-        tmp_files_zip_path = self.backup_dir.joinpath(self.now.strftime("FILES_%d_%m_%Y"))
         
-        shutil.make_archive(str(tmp_files_zip_path),'zip',str(self.downloads_dir))
-        
-        return self.files_zip_path
+        for path in self.directory_iterator(self.downloads_dir):
+            self.todays_zip.write(path,f'apk_backup/{path}',zipfile.ZIP_DEFLATED)
+    
     
     # you can use this code to restore the database. you need to provide backup directory path and database instance.
     def restore_mongodb_backup_file(self,dir_path,db,db_name="playstore"):

@@ -7,9 +7,8 @@ if __name__ == "__main__":
     dfu = DropboxFileUploader()
     gbz = GenerateBackupZip()
     
-    mongo_backup_file = gbz.generate_mongodb_backup_zip()
-    dfu.upload(mongo_backup_file)
+    gbz.generate_mongodb_backup_zip()
+    # gbz.generate_apk_backup_zip()
+    gbz.todays_zip.close()
     
-    files_backup_file = gbz.generate_apk_backup_zip()
-    # dfu.upload(files_backup_file)
-    
+    dfu.upload(str(gbz.todays_zip))
