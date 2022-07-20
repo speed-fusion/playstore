@@ -11,4 +11,4 @@ if __name__ == "__main__":
     # gbz.generate_apk_backup_zip()
     gbz.todays_zip.close()
     
-    dfu.upload(str(gbz.todays_zip))
+    dfu.upload(str(gbz.zip_path))
