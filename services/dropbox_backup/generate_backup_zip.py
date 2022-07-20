@@ -58,7 +58,7 @@ class GenerateBackupZip:
                     f.write(bson.BSON.encode(doc))
             print(f'file generated : {file_path}')
 
-            self.todays_zip.write(str(file_path),f'mongo_backup/{file_path}',zipfile.ZIP_DEFLATED)
+            self.todays_zip.write(str(file_path),f'mongo_backup/{file_path.name}',zipfile.ZIP_DEFLATED)
             
             file_path.unlink()
         
