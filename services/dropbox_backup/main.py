@@ -11,7 +11,7 @@ if __name__ == "__main__":
     gbz.generate_mongodb_backup_zip()
     
     # add apk files into backup.
-    gbz.generate_apk_backup_zip()
+    # gbz.generate_apk_backup_zip()
     
     # close the file before uploading
     gbz.todays_zip.close()
