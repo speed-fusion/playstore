@@ -19,5 +19,8 @@ if __name__ == "__main__":
     # upload generated zip in dropbox
     dfu.upload(gbz.zip_path)
     
+    # manage backup files
+    dfu.manage_backup_files()
+    
     # delete the zip file after uploaded to dropbox
     gbz.zip_path.unlink()

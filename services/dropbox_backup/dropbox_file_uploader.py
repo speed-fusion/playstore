@@ -12,9 +12,16 @@ class DropboxFileUploader:
         self.dropbox = dropbox.Dropbox(oauth2_refresh_token=self.access_token,app_key=self.token_manager.APP_KEY)
         self.now = datetime.now()
         self.upload_dir = f'/cdn.onehost.io'
-        self.max_backup_file_count = 19
+        self.max_backup_file_count = 7
     
     def upload(self,file_path:Path):
+        
+        try:
+            self.dropbox.files_delete(self.upload_dir + "/" + file_path.name)
+            print(f'existing file : {file_path.name} is deleted from dropbox')
+        except:
+            pass
+        
         with open(file_path,"rb") as f:
             self.dropbox.files_upload(f.read(),self.upload_dir + "/" + file_path.name)
     
