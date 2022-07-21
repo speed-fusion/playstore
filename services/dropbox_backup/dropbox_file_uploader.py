@@ -3,7 +3,6 @@ import os
 import dropbox
 from datetime import datetime
 from pathlib import Path
-from dropbox import DropboxOAuth2FlowNoRedirect
 
 class DropboxFileUploader:
     def __init__(self) -> None:
@@ -38,9 +37,9 @@ class DropboxFileUploader:
         
         upload_session = self.dropbox.files_upload_session_start(f.read(self.chunk_size))
         
-        cursor = self.dropbox.files.UploadSessionCursor(session_id=upload_session.session_id,offset = f.tell())
+        cursor = self.dropbox.UploadSessionCursor(session_id=upload_session.session_id,offset = f.tell())
         
-        commit = self.dropbox.files.CommitInfo(path=dest_path)
+        commit = self.dropbox.CommitInfo(path=dest_path)
         
         while f.tell() < file_size:
             if ((file_size - f.tell()) <= self.chunk_size ):
@@ -77,7 +76,7 @@ class DropboxOfflineTokenManager:
         if self.refresh_token_file.exists() == True:
             return self.load_refresh_token_from_file()
         
-        auth_flow = DropboxOAuth2FlowNoRedirect(self.APP_KEY,use_pkce=self.use_pkce, token_access_type=self.token_type)
+        auth_flow = dropbox.DropboxOAuth2FlowNoRedirect(self.APP_KEY,use_pkce=self.use_pkce, token_access_type=self.token_type)
         
         url = auth_flow.start()
         
