@@ -108,7 +108,7 @@ class GenerateBackupZip:
                 self.todays_zip.write(str(icon_path),f'apk_backup/{icon_path}',zipfile.ZIP_DEFLATED)
             
             test_file_count += 1
-            if test_file_count > 7:
+            if test_file_count > 3:
                 break
     
     
