@@ -1,10 +1,10 @@
-from dropbox_file_uploader import DropboxFileUploader
+from dropbox_file_uploader_custom import DropboxFileUploaderCustom
 
 from generate_backup_zip import GenerateBackupZip
 
 
 if __name__ == "__main__":
-    dfu = DropboxFileUploader()
+    dfu = DropboxFileUploaderCustom()
     gbz = GenerateBackupZip()
     
     # generate mongo backup and add generated files in zip

@@ -3,8 +3,7 @@ import os
 import dropbox
 from datetime import datetime
 from pathlib import Path
-
-class DropboxFileUploader:
+class DropboxFileUploaderCustom:
     def __init__(self) -> None:
         self.token_manager = DropboxOfflineTokenManager()
         self.access_token = self.token_manager.get_token()
@@ -37,9 +36,9 @@ class DropboxFileUploader:
         
         upload_session = self.dropbox.files_upload_session_start(f.read(self.chunk_size))
         
-        cursor = self.dropbox.UploadSessionCursor(session_id=upload_session.session_id,offset = f.tell())
+        cursor = self.dropbox.files.UploadSessionCursor(session_id=upload_session.session_id,offset = f.tell())
         
-        commit = self.dropbox.CommitInfo(path=dest_path)
+        commit = self.dropbox.files.CommitInfo(path=dest_path)
         
         while f.tell() < file_size:
             if ((file_size - f.tell()) <= self.chunk_size ):
