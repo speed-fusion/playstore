@@ -13,8 +13,9 @@ class DropboxFileUploader:
         self.now = datetime.now()
         self.upload_dir = f'/cdn.onehost.io'
         self.max_backup_file_count = 7
+        self.chunk_size = 4 * 1024 * 1024
     
-    def upload(self,file_path:Path):
+    def upload_small_file(self,file_path:Path):
         
         try:
             self.dropbox.files_delete(self.upload_dir + "/" + file_path.name)
@@ -24,6 +25,31 @@ class DropboxFileUploader:
         
         with open(file_path,"rb") as f:
             self.dropbox.files_upload(f.read(),self.upload_dir + "/" + file_path.name)
+            
+    def upload(self,file_path:Path):
+        dest_path = self.upload_dir + "/" + file_path.name
+        f = open(file_path)
+        file_size = os.path.getsize(file_path)
+        
+        if file_size <= self.chunk_size:
+            self.upload_small_file(file_path)
+            return
+        
+        upload_session = self.dropbox.files_upload_session_start(f.read(self.chunk_size))
+        
+        cursor = self.dropbox.files.UploadSessionCursor(session_id=upload_session.session_id,offset = f.tell())
+        
+        commit = self.dropbox.files.CommitInfo(path=dest_path)
+        
+        while f.tell() < file_size:
+            if ((file_size - f.tell()) <= self.chunk_size ):
+                self.dropbox.files_upload_session_finish(f.read(self.chunk_size),cursor,commit)
+            else:
+                self.dropbox.files_upload_session_append(f.read(self.chunk_size),cursor.session_id,cursor.offset)
+                
+                cursor.offset = f.tell()
+        
+        f.close()
     
     def manage_backup_files(self):
         files = self.dropbox.files_list_folder(self.upload_dir, limit=30).entries
