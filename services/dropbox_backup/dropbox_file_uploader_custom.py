@@ -42,9 +42,9 @@ class DropboxFileUploaderCustom:
         
         while f.tell() < file_size:
             if ((file_size - f.tell()) <= self.chunk_size ):
-                dropbox.files_upload_session_finish(f.read(self.chunk_size),cursor,commit)
+                self.dropbox.files_upload_session_finish(f.read(self.chunk_size),cursor,commit)
             else:
-                dropbox.files_upload_session_append(f.read(self.chunk_size),cursor.session_id,cursor.offset)
+                self.dropbox.files_upload_session_append(f.read(self.chunk_size),cursor.session_id,cursor.offset)
                 
                 cursor.offset = f.tell()
         
