@@ -47,7 +47,7 @@ class GenerateBackupZip:
         
         self.downloads_dir = Path("/downloads")
         
-        self.todays_zip = zipfile.ZipFile(self.zip_path,"w")
+        # self.todays_zip = zipfile.ZipFile(self.zip_path,"w")
 
     def generate_mongodb_backup_zip(self):
         

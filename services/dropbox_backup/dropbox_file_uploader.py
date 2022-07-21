@@ -29,7 +29,7 @@ class DropboxFileUploader:
             pass
         
         dest_path = self.upload_dir + "/" + file_path.name
-        f = open(file_path)
+        f = open(file_path,'rb')
         file_size = os.path.getsize(file_path)
         
         if file_size <= self.chunk_size:
