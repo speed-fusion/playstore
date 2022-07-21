@@ -36,15 +36,15 @@ class DropboxFileUploaderCustom:
         
         upload_session = self.dropbox.files_upload_session_start(f.read(self.chunk_size))
         
-        cursor = self.dropbox.files.UploadSessionCursor(session_id=upload_session.session_id,offset = f.tell())
+        cursor = dropbox.files.UploadSessionCursor(session_id=upload_session.session_id,offset = f.tell())
         
-        commit = self.dropbox.files.CommitInfo(path=dest_path)
+        commit = dropbox.files.CommitInfo(path=dest_path)
         
         while f.tell() < file_size:
             if ((file_size - f.tell()) <= self.chunk_size ):
-                self.dropbox.files_upload_session_finish(f.read(self.chunk_size),cursor,commit)
+                dropbox.files_upload_session_finish(f.read(self.chunk_size),cursor,commit)
             else:
-                self.dropbox.files_upload_session_append(f.read(self.chunk_size),cursor.session_id,cursor.offset)
+                dropbox.files_upload_session_append(f.read(self.chunk_size),cursor.session_id,cursor.offset)
                 
                 cursor.offset = f.tell()
         
