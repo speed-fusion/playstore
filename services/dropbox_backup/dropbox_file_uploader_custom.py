@@ -15,7 +15,7 @@ class DropboxFileUploaderCustom:
     
     def upload_small_file(self,file_path:Path):
         
-        with open(file_path,"rb") as f:
+        with open(file_path) as f:
             self.dropbox.files_upload(f.read(),self.upload_dir + "/" + file_path.name)
             
     def upload(self,file_path:Path):
