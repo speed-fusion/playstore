@@ -8,13 +8,13 @@ if __name__ == "__main__":
     gbz = GenerateBackupZip()
     
     # generate mongo backup and add generated files in zip
-    # gbz.generate_mongodb_backup_zip()
+    gbz.generate_mongodb_backup_zip()
     
     # add apk files into backup.
-    # gbz.generate_apk_backup_zip()
+    gbz.generate_apk_backup_zip()
     
     # close the file before uploading
-    # gbz.todays_zip.close()
+    gbz.todays_zip.close()
     
     # upload generated zip in dropbox
     dfu.upload(gbz.zip_path)

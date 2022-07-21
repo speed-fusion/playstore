@@ -45,9 +45,12 @@ class GenerateBackupZip:
         
         self.zip_path = self.backup_dir.joinpath(self.now.strftime("cdn.onehost.io-%d_%m_%Y.zip"))
         
+        if self.zip_path.exists() == True:
+            self.zip_path.unlink()
+        
         self.downloads_dir = Path("/downloads")
         
-        # self.todays_zip = zipfile.ZipFile(self.zip_path,"w")
+        self.todays_zip = zipfile.ZipFile(self.zip_path,"w")
 
     def generate_mongodb_backup_zip(self):
         
@@ -82,6 +85,7 @@ class GenerateBackupZip:
     def generate_apk_backup_zip(self):
         # for path in self.directory_iterator(self.downloads_dir):
         #     self.todays_zip.write(path,f'apk_backup/{path}',zipfile.ZIP_DEFLATED)
+        test_file_count = 0
         for app in self.db.apps.find({}):
             versions = list(self.db.files.find({"package_id":app["_id"],"status":"active"}).sort("published_on_timestamp",pymongo.DESCENDING))
             
@@ -102,6 +106,10 @@ class GenerateBackupZip:
             if icon_path.exists() == True:
                 print(f'added : {icon_path}')
                 self.todays_zip.write(str(icon_path),f'apk_backup/{icon_path}',zipfile.ZIP_DEFLATED)
+            
+            test_file_count += 1
+            if test_file_count > 10:
+                break
     
     
     # you can use this code to restore the database. you need to provide backup directory path and database instance.
