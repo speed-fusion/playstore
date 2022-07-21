@@ -36,7 +36,7 @@ class DropboxFileUploader:
 
 class DropboxOfflineTokenManager:
     def __init__(self) -> None:
-        self.APP_KEY = "xokf3h1wu1wh4bt"
+        self.APP_KEY = "eiljvk1ais3se7z"
         self.use_pkce = True
         self.token_type = "offline"
         self.refresh_token = None
@@ -94,4 +94,5 @@ class DropboxOfflineTokenManager:
 
 if __name__ == "__main__":
     dboff = DropboxFileUploader()
-    dboff.manage_backup_files()
+    dboff.token_manager.get_user_info()
+    # dboff.manage_backup_files()
