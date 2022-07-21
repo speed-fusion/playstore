@@ -17,16 +17,17 @@ class DropboxFileUploader:
     
     def upload_small_file(self,file_path:Path):
         
+        with open(file_path,"rb") as f:
+            self.dropbox.files_upload(f.read(),self.upload_dir + "/" + file_path.name)
+            
+    def upload(self,file_path:Path):
+        
         try:
             self.dropbox.files_delete(self.upload_dir + "/" + file_path.name)
             print(f'existing file : {file_path.name} is deleted from dropbox')
         except:
             pass
         
-        with open(file_path,"rb") as f:
-            self.dropbox.files_upload(f.read(),self.upload_dir + "/" + file_path.name)
-            
-    def upload(self,file_path:Path):
         dest_path = self.upload_dir + "/" + file_path.name
         f = open(file_path)
         file_size = os.path.getsize(file_path)
