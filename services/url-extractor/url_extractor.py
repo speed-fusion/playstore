@@ -60,7 +60,7 @@ class DownloadUrlExtractor:
                 url = app["download_page_url"]
                 self.wd.page.goto(url)
                 screenshot_path = self.screenshot_dir.joinpath(f'{uuid.uuid4()}.png')
-                self.wd.page.screenshot(str(screenshot_path))
+                self.wd.page.screenshot(path=str(screenshot_path))
             except Exception as e:
                 print(str(e))
                 
