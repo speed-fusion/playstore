@@ -1,3 +1,5 @@
+from pathlib import Path
+import uuid
 from database import Database
 from playwright_driver import PlaywrightDriver
 import time
@@ -6,6 +8,7 @@ class DownloadUrlExtractor:
         self.db = Database()
         self.wd = PlaywrightDriver()
         self.current_id = None
+        self.screenshot_dir = Path("/screenshot")
     
     
     def handle_response(self,response):
@@ -56,6 +59,8 @@ class DownloadUrlExtractor:
                 self.current_id = app["_id"]
                 url = app["download_page_url"]
                 self.wd.page.goto(url)
+                screenshot_path = self.screenshot_dir.joinpath(f'{uuid.uuid4()}.png')
+                self.wd.page.screenshot(str(screenshot_path))
             except Exception as e:
                 print(str(e))
                 

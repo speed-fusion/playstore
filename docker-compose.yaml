@@ -57,6 +57,9 @@ services:
       - mongodb
     restart: always
 
+    volumes:
+      - ./screenshot:/screenshot
+
     env_file: .env
 
   version-checker:
