@@ -59,11 +59,12 @@ class DownloadUrlExtractor:
                 self.current_id = app["_id"]
                 url = app["download_page_url"]
                 self.wd.page.goto(url)
-                screenshot_path = self.screenshot_dir.joinpath(f'{app["_id"]}.png')
-                self.wd.page.screenshot(path=str(screenshot_path))
+                download_btn = self.wd.page.wait_for_selector("//div[class='download-start-btn']")
+                download_btn.click()
             except Exception as e:
                 print(str(e))
-                
+                screenshot_path = self.screenshot_dir.joinpath(f'{app["_id"]}_{str(e).replace(" ","_")}.png')
+                self.wd.page.screenshot(path=str(screenshot_path))
             
         self.wd.stop()
         
