@@ -36,7 +36,7 @@ class DownloadUrlExtractor:
     
     def handle_routes(self,route):
         url = route.request.url
-        return route.continue_()
+        # return route.continue_()
         if "https://m.apkpure.com" in url or "https://apkpure.com" in url  or "download.apkpure.com" in url:
             print(url)
             return route.continue_()
