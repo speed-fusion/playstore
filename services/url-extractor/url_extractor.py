@@ -64,8 +64,8 @@ class DownloadUrlExtractor:
                 download_btn.click()
             except Exception as e:
                 print(str(e))
-                screenshot_path = self.screenshot_dir.joinpath(f'{app["_id"]}_{str(e).replace(" ","_")}.png')
-                self.wd.page.screenshot(path=str(screenshot_path))
+                # screenshot_path = self.screenshot_dir.joinpath(f'{app["_id"]}_{str(e).replace(" ","_")}.png')
+                # self.wd.page.screenshot(path=str(screenshot_path))
             
         self.wd.stop()
         
