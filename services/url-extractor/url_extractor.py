@@ -36,7 +36,7 @@ class DownloadUrlExtractor:
     
     def handle_routes(self,route):
         url = route.request.url
-        
+        return route.continue_()
         if "https://m.apkpure.com" in url or "https://apkpure.com" in url  or "download.apkpure.com" in url:
             print(url)
             return route.continue_()
@@ -59,7 +59,8 @@ class DownloadUrlExtractor:
                 self.current_id = app["_id"]
                 url = app["download_page_url"]
                 self.wd.page.goto(url)
-                download_btn = self.wd.page.wait_for_selector("//div[class='download-start-btn']")
+                # download_link = self.wd.page.wait_for_selector("//a[]")
+                download_btn = self.wd.page.wait_for_selector('//div[@class="download-start-btn"]')
                 download_btn.click()
             except Exception as e:
                 print(str(e))
