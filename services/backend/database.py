@@ -140,7 +140,7 @@ class Database:
         data["app_name"] = app["title"]
         data["mode_type"] = "No"
 
-        files = list(self.files.find({"package_id": app["_id"]}).sort(
+        files = list(self.files.find({"package_id": app["_id"],"status":"active"}).sort(
             "published_on_timestamp", pymongo.DESCENDING))
 
         if len(files) == 0:
